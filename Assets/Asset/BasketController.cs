@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class BasketController : MonoBehaviour
 {
-    public AudioSource audio;
+    AudioSource audio;
     public AudioClip appleSE;
     public AudioClip bombSE;
+    GameObject director;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Application.targetFrameRate = 60;
+        audio = GetComponent<AudioSource>();
+        director = GameObject.Find("GameDirector");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -17,11 +21,13 @@ public class BasketController : MonoBehaviour
         {
             audio.PlayOneShot(this.appleSE);
             Debug.Log("接到了！ Tag=Apple");
+            this.director.GetComponent<GameDirector>().GetApple();
         }
         else if (other.CompareTag("Bomb"))
         {
             audio.PlayOneShot(this.bombSE);
             Debug.Log("哎呀呀呀呀！ Tag=Bomb");
+            this.director.GetComponent<GameDirector>().GetBomb();
         }
         
         Destroy(other.gameObject);
