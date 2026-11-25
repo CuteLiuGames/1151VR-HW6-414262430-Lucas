@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameDirector : MonoBehaviour
@@ -8,6 +9,10 @@ public class GameDirector : MonoBehaviour
     float time = 60.0f;
     int point = 0;
     GameObject generator;
+    [SerializeField] private GameObject gameOver;
+    int finalScore;
+
+    [SerializeField] private TextMeshProUGUI ScoreText;
 
     bool isEnd = false;
 
@@ -39,6 +44,9 @@ public class GameDirector : MonoBehaviour
             if (!this.isEnd)
             {
                 Debug.Log("Time Up");
+                finalScore = point;
+                gameOver.SetActive(true);
+                ScoreText.text = finalScore.ToString();
                 this.isEnd = true;
             }
 
@@ -65,5 +73,9 @@ public class GameDirector : MonoBehaviour
         this.timerText.GetComponent<TextMeshProUGUI>().text = this.time.ToString("F1");
         this.pointText.GetComponent<TextMeshProUGUI>().text = this.point.ToString() + " point";
         
+    }
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
