@@ -7,12 +7,15 @@ public class BasketController : MonoBehaviour
     public AudioClip bombSE;
     GameObject director;
 
+    GameObject itemGeneratorActive;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Application.targetFrameRate = 60;
         audio = GetComponent<AudioSource>();
         director = GameObject.Find("GameDirector");
+        itemGeneratorActive = GameObject.Find("ItemGenerator");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -36,7 +39,7 @@ public class BasketController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && itemGeneratorActive.GetComponent<ItemGenerator>().isActive)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

@@ -10,6 +10,8 @@ public class ItemGenerator : MonoBehaviour
     float ratio = 2;
     float speed = -0.03f;
 
+    public bool isActive = false;
+
     public void setParameter (float span, float speed, float ratio)
     {
         this.span = span;
@@ -17,27 +19,46 @@ public class ItemGenerator : MonoBehaviour
         this.ratio = ratio;
     }
 
+    public void Reset()
+    {
+        delta = 0f;
+    }
+    public void SetDefault()
+    {
+        span = 1.0f;
+        ratio = 2;
+        speed = -0.03f;
+    }
+
+    public void SetState(bool active)
+    {
+        isActive = active;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        this.delta += Time.deltaTime;
-        if(this.delta > span)
+        if (isActive)
         {
-            this.delta = 0;
-            GameObject item;
-            int dice = Random.Range(1, 11);
-            if (dice <= this.ratio)
+            this.delta += Time.deltaTime;
+            if (this.delta > span)
             {
-                item = Instantiate(bombPrefab);
+                this.delta = 0;
+                GameObject item;
+                int dice = Random.Range(1, 11);
+                if (dice <= this.ratio)
+                {
+                    item = Instantiate(bombPrefab);
+                }
+                else
+                {
+                    item = Instantiate(applePrefab);
+                }
+                float x = Random.Range(-1, 2);
+                float z = Random.Range(-1, 2);
+                item.transform.position = new Vector3(x, 4, z);
+                item.GetComponent<ItemController>().dropSpeed = speed;
             }
-            else 
-            {
-                item = Instantiate(applePrefab);
-            }
-            float x = Random.Range(-1, 2);
-            float z = Random.Range(-1, 2);
-            item.transform.position = new Vector3(x, 4, z);
-            item.GetComponent<ItemController>().dropSpeed = speed;
         }
     }
 }
